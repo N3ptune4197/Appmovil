@@ -34,7 +34,8 @@ function MyTabs() {
                     tabBarIcon: ({color, size}) => (
                         <Octicons name="home" color={color} size={size - 6}/>
                     ),
-                    headerShown: false
+                    headerShown: false,
+                    tabBarLabelStyle: { fontSize: 12 },
                 }}
             />
 
@@ -47,7 +48,8 @@ function MyTabs() {
                     tabBarIcon: ({color, size}) => (
                         <Ionicons name="map-outline" color={color} size={size - 6}/>
                     ),
-                    headerShown: false
+                    headerShown: false,
+                    tabBarLabelStyle: { fontSize: 12 },
                 }}
                 />
 
@@ -59,7 +61,8 @@ function MyTabs() {
                     tabBarIcon: ({color, size}) => (
                         <Fontisto name="hotel" color={color} size={size - 6}/>
                     ),
-                    headerShown: false
+                    headerShown: false,
+                    tabBarLabelStyle: { fontSize: 12 },
                 }}
                 
                 />
@@ -73,7 +76,8 @@ function MyTabs() {
                     tabBarIcon: ({color, size}) => (
                         <MaterialCommunityIcons name="map-marker-outline" color={color} size={size - 5}/>
                     ),
-                    headerShown: false
+                    headerShown: false,
+                    tabBarLabelStyle: { fontSize: 12 },
                 }}
                 
                 />
@@ -86,7 +90,8 @@ function MyTabs() {
                     tabBarIcon: ({color, size}) => (
                         <Ionicons name="airplane-outline" color={color} size={size - 6}/>
                     ),
-                    headerShown: false
+                    headerShown: false,
+                    tabBarLabelStyle: { fontSize: 12 },
                 }}
                 />
         </Tab.Navigator>
