@@ -1,13 +1,24 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View, Image, TextInput, Pressable, } from "react-native";
+import { StyleSheet, Text, View, Image, TextInput, Pressable } from "react-native";
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { ScrollView } from "react-native-gesture-handler";
 
 const LoginScreen = () => {
   const mochejaIcon = require("./../../assets/mochejalogopng.png");
+  const machuPicchu = require("./../../assets/machuPicchu.jpg");
+  const londres = require("./../../assets/Londres.png");
+  const paris = require("./../../assets/Paris.jpg");
+  const caracas = require("./../../assets/Caracas.jpg");
+  const bogota = require("./../../assets/Bogota.jpg");
+  const riodejaneiro = require("./../../assets/RiodeJaneiro.jpg");
+  const coliseoRomano = require("./../../assets/ColiseoRomano.jpg");
+  const chichenItza = require("./../../assets/ChichenItza.jpg");
+
+
 return (
 
 
@@ -15,10 +26,7 @@ return (
       <StatusBar style="auto" />
 
 
-
-
-
-      <View style={{width:'95%', flexDirection:'row', justifyContent:"center", alignItems:"center", marginTop:25, marginBottom:10}}>
+      <View style={{width:'95%', flexDirection:'row', justifyContent:"center", alignItems:"center", marginTop:13, marginBottom:10}}>
         <View style={{justifyContent:"flex-start", backgroundColor:"#fff", width:"36%"}}>
           <Pressable>
             <FontAwesome6 name="bars" size={23}/>
@@ -41,9 +49,12 @@ return (
 
 
 
-      <View style={{width:"90%", alignItems:"center", backgroundColor:"white", marginBottom:30}}>
 
-        <Text style={{fontSize:25, fontWeight:"600", marginBottom:20 }}>Lugares Turísticos</Text>
+
+
+      <View style={{width:"90%", alignItems:"center", backgroundColor:"white", marginBottom:15}}>
+
+        <Text style={{fontSize:30, fontWeight:"600", marginBottom:20 }}>Lugares Turísticos</Text>
 
         <View style={{width:"100%", flexDirection:"row", alignItems:"center", justifyContent:"center", alignContent:"space-between", backgroundColor:"white" }} >
 
@@ -55,12 +66,87 @@ return (
 
 
 
-      <View style={{backgroundColor:"pink", width:"100%", alignItems:"center"}}>
-        <View>
+      <View style={{width:"100%", alignItems:"center", flexDirection:"column", gap:15}}>
+
+        
+        <View style={{flexDirection:"row", gap:20}}>
+          <View>
+            <Text style={{textAlign:"center", fontSize:20, marginBottom:7}}>Perú</Text>
+            <Image  source={machuPicchu}  style= {{width:160, height:140, borderRadius:15}} />
+          </View>
           
+          <View>
+            <Text style={{textAlign:"center", fontSize:20, marginBottom:7}}>Londres</Text>
+            <Image  source={londres}  style= {{width:160, height:140, borderRadius:15}} />
+          </View>
         </View>
 
+
+
+
+        <View style={{flexDirection:"row", gap:20}}>
+          <View>
+            <Text style={{textAlign:"center", fontSize:20, marginBottom:7}}>París</Text>
+            <Image  source={paris}  style= {{width:160, height:140, borderRadius:15}} />
+          </View>
+          
+          <View>
+            <Text style={{textAlign:"center", fontSize:20, marginBottom:7}}>Caracas</Text>
+            <Image  source={caracas}  style= {{width:160, height:140, borderRadius:15}} />
+          </View>
+        </View>
+
+
+
+
+        <View style={{flexDirection:"row", gap:20}}>
+          <View>
+            <Text style={{textAlign:"center", fontSize:20, marginBottom:7}}>Bogotá</Text>
+            <Image  source={bogota}  style= {{width:160, height:140, borderRadius:15}} />
+          </View>
+          
+          <View>
+            <Text style={{textAlign:"center", fontSize:20, marginBottom:7}}>Rio de Janeiro</Text>
+            <Image  source={riodejaneiro}  style= {{width:160, height:140, borderRadius:15}} />
+          </View>
+        </View>
+
+
+
+
+
+        <View style={{flexDirection:"row", gap:20}}>
+          <View>
+            <Text style={{textAlign:"center", fontSize:20, marginBottom:7}}>Coliseo Romano</Text>
+            <Image  source={coliseoRomano}  style= {{width:160, height:140, borderRadius:15}} />
+          </View>
+          
+          <View>
+            <Text style={{textAlign:"center", fontSize:20, marginBottom:7}}>Chichen Itza</Text>
+            <Image  source={chichenItza}  style= {{width:160, height:140, borderRadius:15}} />
+          </View>
+        </View>
+
+
+
+
+
+        <View style={{flexDirection:"row", gap:20}}>
+          <View>
+            <Text style={{textAlign:"center", fontSize:20, marginBottom:7}}>Perú</Text>
+            <Image  source={machuPicchu}  style= {{width:160, height:140, borderRadius:15}} />
+          </View>
+          
+          <View>
+            <Text style={{textAlign:"center", fontSize:20, marginBottom:7}}>ú</Text>
+            <Image  source={machuPicchu}  style= {{width:160, height:140, borderRadius:15}} />
+          </View>
+        </View>
+
+
       </View>
+
+
 
 
 
