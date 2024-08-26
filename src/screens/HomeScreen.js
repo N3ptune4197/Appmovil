@@ -13,7 +13,7 @@ return (
 
 
 
-      <View style={{width:'95%', flexDirection:'row', marginTop:-20, backgroundColor:'skyblue', justifyContent:"center"}}>
+      <View style={{width:'95%', flexDirection:'row', backgroundColor:'skyblue', justifyContent:"center"}}>
         
         <Image
           source={mochejaIcon}
