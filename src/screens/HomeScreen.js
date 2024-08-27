@@ -21,7 +21,6 @@ const LoginScreen = () => {
 
 return (
 
-
     <View style={styles.container}>
       <StatusBar style="auto" />
 
@@ -50,6 +49,7 @@ return (
 
 
 
+      <ScrollView>
 
 
       <View style={{width:"90%", alignItems:"center", backgroundColor:"white", marginBottom:15}}>
@@ -127,26 +127,10 @@ return (
           </View>
         </View>
 
-
-
-
-
-        <View style={{flexDirection:"row", gap:20}}>
-          <View>
-            <Text style={{textAlign:"center", fontSize:20, marginBottom:7}}>Perú</Text>
-            <Image  source={machuPicchu}  style= {{width:160, height:140, borderRadius:15}} />
-          </View>
-          
-          <View>
-            <Text style={{textAlign:"center", fontSize:20, marginBottom:7}}>ú</Text>
-            <Image  source={machuPicchu}  style= {{width:160, height:140, borderRadius:15}} />
-          </View>
-        </View>
-
-
       </View>
 
 
+      </ScrollView>
 
 
 
