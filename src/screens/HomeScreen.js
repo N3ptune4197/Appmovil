@@ -12,6 +12,7 @@ import {
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { ScrollView } from "react-native-gesture-handler";
+import axios from "axios";
 
 const LoginScreen = () => {
   const mochejaIcon = require("./../../assets/mochejalogopng.png");
@@ -26,66 +27,132 @@ const LoginScreen = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDestination, setSelectedDestination] = useState(null);
+  const [weatherData, setWeatherData] = useState(null);
+  const [citySearch, setCitySearch] = useState(""); //busqueda por CIUDAD
 
   const destinations = [
     {
       name: "Perú",
       image: machuPicchu,
+      lat: -13.1631,
+      lon: -72.545,
       message:
         "Explora la majestuosa ciudadela inca, una maravilla del mundo en lo alto de los Andes.",
     },
     {
       name: "Londres",
       image: londres,
+      lat: 51.5074,
+      lon: -0.1278,
       message:
         "Sumérgete en la histórica y cosmopolita capital británica, donde lo antiguo se encuentra con lo moderno.",
     },
     {
       name: "París",
       image: paris,
+      lat: 48.8566,
+      lon: 2.3522,
       message:
         "Vive el romance y la elegancia en el corazón de Europa, desde París hasta la Riviera Francesa.",
     },
     {
       name: "Caracas",
       image: caracas,
+      lat: 10.4806,
+      lon: -66.9036,
       message:
         "Descubre la vibrante capital de Venezuela, llena de historia y cultura en cada rincón.",
     },
     {
       name: "Bogotá",
       image: bogota,
+      lat: 4.711,
+      lon: -74.0721,
       message:
         "Conoce la colorida y cultural capital de Colombia, un destino lleno de arte y sabor.",
     },
     {
       name: "Rio de Janeiro",
       image: riodejaneiro,
+      lat: -22.9068,
+      lon: -43.1729,
       message:
         "Experimenta la alegría y belleza natural de la icónica ciudad brasileña, hogar del Carnaval.",
     },
     {
       name: "Coliseo Romano",
       image: coliseoRomano,
+      lat: 41.8902,
+      lon: 12.4922,
       message:
         "Viaja al pasado en el imponente Coliseo, un símbolo de la grandeza del Imperio Romano.",
     },
     {
       name: "Chichen Itza",
       image: chichenItza,
+      lat: 20.6843,
+      lon: -88.5678,
       message:
         "Admira la impresionante pirámide de Kukulkán, testimonio de la avanzada civilización maya.",
     },
   ];
 
-  const openModal = (destination) => {
-    setSelectedDestination(destination);
-    setModalVisible(true);
+  const fetchWeatherData = async (placeId) => {
+    try {
+      const response = await axios.get(
+        `https://www.meteosource.com/api/v1/free/point`,
+        {
+          params: {
+            place_id: placeId,
+            sections: "all",
+            timezone: "UTC",
+            language: "en",
+            units: "metric",
+            key: "5mxzfs5wahaesjx4g27cc6tgz48euhb4a06bdw0k",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching weather data:", error);
+      return null;
+    }
   };
 
+  const openModal = async (destination) => {
+    setSelectedDestination(destination);
+    setModalVisible(true);
+
+    const placeId = getPlaceId(destination.name);
+    if (placeId) {
+      const data = await fetchWeatherData(placeId);
+      if (data) {
+        setWeatherData(data.current);
+      }
+    }
+  };
+
+  const handleCitySearch = async () => {
+    const placeId = await getPlaceId(citySearch);
+    if (placeId) {
+      const data = await fetchWeatherData(placeId);
+      if (data) {
+        setWeatherData(data.current);
+        setSelectedDestination(null);
+        setModalVisible(true);
+      }
+    }
+  };
+
+  const getPlaceId = async (cityName) => {
+    return cityName;
+  };
+
+  // Función para cerrar el modal
   const closeModal = () => {
     setModalVisible(false);
     setSelectedDestination(null);
+    setWeatherData(null);
   };
 
   return (
@@ -111,8 +178,17 @@ const LoginScreen = () => {
         <View style={styles.searchSection}>
           <Text style={styles.title}>Lugares Turísticos</Text>
           <View style={styles.searchBar}>
-            <TextInput style={styles.searchInput} placeholder="Buscar" />
-            <Ionicons name="search" style={styles.searchIcon} />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Buscar ciudad"
+              onChangeText={setCitySearch}
+              value={citySearch}
+            />
+            <Ionicons
+              name="search"
+              style={styles.searchIcon}
+              onPress={handleCitySearch}
+            />
           </View>
         </View>
 
@@ -136,14 +212,29 @@ const LoginScreen = () => {
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{selectedDestination?.name}</Text>
-            <Image
-              source={selectedDestination?.image}
-              style={styles.modalImage}
-            />
-            <Text style={styles.modalMessage}>
-              {selectedDestination?.message}
+            <Text style={styles.modalTitle}>
+              {selectedDestination ? selectedDestination.name : citySearch}
             </Text>
+            {selectedDestination && (
+              <Image
+                source={selectedDestination.image}
+                style={styles.modalImage}
+              />
+            )}
+            <Text style={styles.modalMessage}>
+              {selectedDestination
+                ? selectedDestination.message
+                : `Clima actual en ${citySearch}`}
+            </Text>
+            {weatherData ? (
+              <View style={styles.weatherContainer}>
+                <Text>Temperatura: {weatherData.temperature}°C</Text>
+                <Text>Humedad: {weatherData.clouds}%</Text>
+                <Text>Viento: {weatherData.wind.speed} km/h</Text>
+              </View>
+            ) : (
+              <Text>Cargando clima...</Text>
+            )}
             <Pressable onPress={closeModal} style={styles.modalButton}>
               <Text style={styles.modalButtonText}>Cerrar</Text>
             </Pressable>
@@ -160,89 +251,76 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
   },
   header: {
-    width: "95%",
     flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 13,
-    marginBottom: 10,
+    padding: 16,
+    backgroundColor: "#f8f8f8",
   },
   headerLeft: {
-    justifyContent: "flex-start",
-    width: "36%",
+    flex: 1,
+    justifyContent: "center",
   },
   headerCenter: {
+    flex: 2,
+    alignItems: "center",
     justifyContent: "center",
   },
   headerRight: {
+    flex: 1,
     flexDirection: "row",
-    justifyContent: "flex-end",
-    width: "36%",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   logo: {
-    width: 80,
-    height: 90,
+    width: 100,
+    height: 40,
     resizeMode: "contain",
   },
   icon: {
-    fontSize: 23,
-    paddingRight: 20,
+    fontSize: 20,
   },
   searchSection: {
-    width: "90%",
-    alignItems: "center",
-    backgroundColor: "white",
-    marginBottom: 15,
+    padding: 16,
+    backgroundColor: "#fff",
   },
   title: {
-    fontSize: 30,
-    fontWeight: "600",
-    marginBottom: 20,
+    fontSize: 24,
+    fontWeight: "bold",
   },
   searchBar: {
-    width: "100%",
     flexDirection: "row",
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    padding: 8,
     alignItems: "center",
-    justifyContent: "center",
   },
   searchInput: {
-    width: "80%",
-    height: 33,
-    backgroundColor: "#E4E4E4",
-    borderRadius: 5,
-    textAlignVertical: "center",
-    fontSize: 15,
-    textAlign: "center",
+    flex: 1,
+    fontSize: 16,
   },
   searchIcon: {
-    fontSize: 23,
-    marginLeft: 13,
+    fontSize: 20,
+    color: "#007bff",
   },
   destinationsContainer: {
-    width: "100%",
-    alignItems: "center",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    gap: 15,
+    flex: 1,
+    padding: 16,
   },
   destinationWrapper: {
-    width: "45%",
-    alignItems: "center",
-    marginBottom: 15,
+    marginBottom: 16,
   },
   destinationText: {
-    textAlign: "center",
-    fontSize: 20,
-    marginBottom: 7,
+    fontSize: 18,
+    fontWeight: "bold",
   },
   destinationImage: {
-    width: 160,
-    height: 140,
-    borderRadius: 15,
+    width: "100%",
+    height: 200,
+    borderRadius: 8,
+    marginTop: 8,
   },
   modalContainer: {
     flex: 1,
@@ -251,31 +329,36 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    width: 300,
-    padding: 20,
-    backgroundColor: "white",
-    borderRadius: 10,
+    width: "90%",
+    padding: 16,
+    backgroundColor: "#fff",
+    borderRadius: 8,
     alignItems: "center",
   },
   modalTitle: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 15,
   },
   modalImage: {
-    width: 250,
-    height: 200,
-    borderRadius: 10,
-    marginBottom: 15,
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    marginVertical: 16,
+  },
+  modalMessage: {
+    fontSize: 16,
+    marginBottom: 16,
+  },
+  weatherContainer: {
+    marginBottom: 16,
   },
   modalButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: "#2196F3",
-    borderRadius: 5,
+    backgroundColor: "#007bff",
+    padding: 12,
+    borderRadius: 8,
   },
   modalButtonText: {
-    color: "white",
+    color: "#fff",
     fontSize: 16,
   },
 });
